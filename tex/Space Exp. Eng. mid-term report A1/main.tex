@@ -1,0 +1,171 @@
+
+\documentclass[journal]{IEEEtran}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{multicol}
+\usepackage{ragged2e}
+\usepackage{siunitx}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{shapes,arrows}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\pgfplotsset{plot coordinates/math parser=false}
+\newlength\figureheight
+\newlength\figurewidth
+\renewcommand\labelitemi{--}
+\newtheorem*{remark}{Remark}
+
+\usepackage{ifthen}
+\usepackage{ifpdf}
+\ifpdf
+\usepackage[pdftex]{hyperref}
+\else
+\usepackage{hyperref}
+\fi
+\usepackage{color}
+
+
+\begin{document}
+
+\title{Space Exploration Engineering\\
+Mid-term Report A1}
+
+\author{Romain~Pessia — Student Number 81723435 \\
+Fall 2017, Keio University }%
+
+\maketitle
+
+\section*{Introduction}
+
+In this short study, we will look into two methods for orbit transfer---namely, the \textit{Hohmann transfer} and the \textit{bi-elliptic transfer}. In particular, our goal is to compare the energy efficiency of both methods for different configurations of the initial and final orbit.
+
+\section*{Energy efficiency for an orbit transfer}
+
+To compare both transfers, we need to define a variable to assess energy efficiency identically for both methods. To that effect, we use a dimensionless metric---the relative speed variation between the two orbits---which will be different for the Hohmann transfer and the bi-elliptic transfer. Using the same notation as the problem statement, the calculation of this metric goes as follows for the Hohmann transfer:
+
+\begin{equation}
+    \Delta v = \left|\Delta v_1 \right| + \left|\Delta v_2 \right|
+\end{equation}
+\begin{equation}
+    \Delta v_1 = \sqrt{\frac{\mu}{r_1}}\left( \sqrt{\frac{2r_2}{r_1+r_2}} -1 \right)
+\end{equation}
+\begin{equation}
+    \Delta v_2 = \sqrt{\frac{\mu}{r_2}}\left( 1- \sqrt{\frac{2r_1}{r_1+r_2}} \right)
+\end{equation}
+
+with $\Delta v$ the overall speed difference between the two orbits, $\Delta v_1$ the speed difference upon entering the elliptic orbit from the circular orbit at $r=r_1$, and $\Delta v_2$ the speed difference upon leaving the elliptic orbit for the circular orbit at $r=r_2$.
+
+For the bi-elliptic transfer, the following formulae apply:
+
+\begin{equation}
+    \Delta v  = \left|\Delta v_1 \right| + \left| \Delta v_2 \right| + \left| \Delta v_3 \right|
+\end{equation}
+\begin{equation}
+    \Delta v_1 = \sqrt{\frac{2\mu}{r_1}-\frac{\mu}{a_1}}-\frac{\mu}{r_1}
+\end{equation}
+\begin{equation}
+    \Delta v_2 = \sqrt{\frac{2\mu}{r_m}-\frac{\mu}{a_2}} - \sqrt{\frac{2\mu}{r_m}-\frac{\mu}{a_1}}
+\end{equation}
+\begin{equation}
+    \Delta v_3 = \sqrt{\frac{2\mu}{r_2}-\frac{\mu}{a_2}}-\frac{\mu}{r_2}
+\end{equation}
+
+where $a_1$ and $a_2$ are the semimajor axes of the two elliptic transfer orbits, and $r_m$ is the transfer radius between the two elliptic orbits.
+
+We can thus define the dimensionless speed variation of the transfer as
+
+\begin{equation}
+    \Delta \bar{v} = \frac{\Delta v}{v_0}
+\end{equation}
+
+where $v_0$ is in both cases $\sqrt{\frac{\mu}{r_1}}$.
+
+\section*{Computer simulation and result analysis}
+
+We developed a C++ program\cite{git_program} that calculates the energy efficiency of both transfer methods based on a certain value of $r_{21}$. For the bi-elliptical transfer, there is an additional free parameter, which we control \textit{via} the ratio $r_{m1}$.
+
+We can thus draw the evolution of the relative speed variation between the initial and final orbits ($\Delta \bar{v}$, which is a classic feature to study when comparing the two methods. The plot in question can be found in Figure \ref{plot:vbar}.
+
+
+\begin{figure}[htp!]
+  \centering
+  \input{tikzplot}
+  \caption{Speed variation of Hohmann and bi-elliptic transfers}
+  \label{plot:vbar}
+\end{figure}
+
+As we can see, when speaking strictly in terms of normalized speed difference, the Hohmann transfer is more efficient than the bi-elliptic transfer for low values of $r_{21}$, no matter the value of $r_{m1}$. To find the limit value of $r_{21}$ above which the Hohmann transfer stops being always optimal, one can calculate the point of intersection between the speed variation curve for the Hohmann transfer and that of the bi-elliptic transfer for $r_{m1}=+\infty$, which gives the value $r_{{21}_{max}}\approx 11.94$.
+
+Conversely, if we make the assumption that $r_m \geq r_2$, there is a minimal value of 
+$r_{21}$ above which any value of $r_{m1}$ greater than $r_{21}$ corresponds to a bi-elliptic transfer more efficient than the Hohmann transfer. To find that value, one needs to calculate the smallest value of $r_{21}$ such that the normalized speed variation for any $r_{m1}\geq r_{21}$ is lower for the bi-elliptic transfer. That minimum value $r_{{21}_{min}}$ has a value of approximately 15.58.
+
+\begin{remark}
+We found those two particular values of $r_{21}$ by developing a short Matlab script which can be found in \cite{git_program}.
+\end{remark}
+
+For values of $r_{21}$ comprised between 11.94 and 15.58, whichever transfer is more efficient depends on the value of $r_{m1}$, as shown by Figure \ref{plot:vbar3}.
+
+Figure \ref{plot:vbar2} shows a zoomed portion of Figure \ref{plot:vbar1}, showcasing the two limit values of $r_{21}$ mentioned earlier, and their graphical interpretation as the intersection of the energy efficiency curves. Figure \ref{plot:vbar3} illustrates the minimal value of $r_{m1}$ above which the bi-elliptic transfer is more efficient for values of $r_{21}$ between $11.94$ and $15.58$. Finally, Table \ref{table:1} shows in a condensed way which transfer is more efficient given the values of $r_{21}$ and $r_{m1}$.
+\begin{table}[h!]
+\centering
+ \begin{tabular}{| c | c| c |} 
+ \hline
+ Value of $r_{21}$ & Value of $r_{m1}$ & Most efficient transfer \\
+ \hline
+ $r_{21} \leq 11.94$ & Any & Hohmann\\
+ $11.94 < r_{21}  \leq 15.58$ & $r_{m1} > r_{m1_{min}}(r_{21}) $ &Hohmann\\
+ $11.94 < r_{21}  \leq 15.58$ & $r_{m1} < r_{m1_{min}}(r_{21}) $ &Bi-elliptic\\
+ $r_{21}> 15.58$ & $r_{m1} > r_{21}$ & Bi-elliptic\\
+ \hline
+\end{tabular}
+\caption{Compared efficiency of Hohmann and bi-elliptic transfers}
+\label{table:1}
+\end{table}
+
+
+
+\begin{figure}[htp!]
+  \centering
+  \input{tikzplot2}
+  \caption{Highlight of the two values of interest for $r_{21}$, represented by the solid vertical lines}
+  \label{plot:vbar2}
+\end{figure}
+
+\begin{figure}[htp!]
+  \centering
+  \input{tikzplot3}
+  \caption{Minimum value of $r_{m1}$ above which the bi-elliptic transfer is more efficient than the Hohmann transfer}
+  \label{plot:vbar3}
+\end{figure}
+
+\section*{Conclusion and open questions}
+
+In this short study, we showed the relative efficiency of two classic orbit methods using a simple criterion based on normalized speed variation. This analysis, though limited, has however allowed us to clearly define in what situations either transfer is more efficient with regard to that criterion.
+
+However, there are several factors that were unaccounted for, one of the most notable being the transfer time. Indeed, one of the notorious drawbacks of the bi-elliptic transfer over the Hohmann transfer is its long transfer time:
+
+\begin{equation}
+    t_{Hohmann}=\pi \sqrt{\frac{(r_1+r_2)^3}{2\mu}}
+\end{equation}
+\begin{equation}
+    t_{Bi-elliptic} = \pi \sqrt{\frac{(r_1+r_m)^3}{2\mu}} + \pi \sqrt{\frac{(r_2+r_m)^3}{2 \mu}}
+\end{equation}
+
+Using the above formulae, a possible extension of this study would be to consider both a normalized speed criterion and a normalized time criterion. We could then, for each transfer method, look into the evolution of both criteria as a function of  $r_{21}$ and $r_{m1}$. In particular, for the bi-elliptic transfer, one possible approach would be to use (for a given value of $r_{21}$) a genetic algorithm in order to find the Pareto frontier from all the points of data obtained with different values of $r_{m1}$. Knowing the Pareto frontier for any value of $r_{21}$, we could then compare the multi-objective efficiency of both transfers depending on the relative weight associated with each criterion.
+
+\appendices
+
+\begin{thebibliography}{9}
+\bibitem{git_program} 
+Romain Pessia. 
+\textit{Hohmann and bi-elliptical transfer energy efficiency}. 
+Github project on \href{https://github.com/romainpessia/Hohmann-and-bi-elliptical-transfer-energy-efficiency}{https://github.com/romainpessia/Hohmann-and-bi-elliptical-transfer-energy-efficiency}, 2017.
+\end{thebibliography}
+
+\end{document}
+
+
