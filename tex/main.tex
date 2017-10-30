@@ -80,6 +80,7 @@ We can thus define the dimensionless speed variation of the transfer as
 
 \begin{equation}
     \Delta \bar{v} = \frac{\Delta v}{v_0}
+    \label{eq:vbar}
 \end{equation}
 
 where $v_0$ is in both cases $\sqrt{\frac{\mu}{r_1}}$.
@@ -88,7 +89,7 @@ where $v_0$ is in both cases $\sqrt{\frac{\mu}{r_1}}$.
 
 We developed a C++ program\cite{git_program} that calculates the energy efficiency of both transfer methods based on a certain value of $r_{21}$. For the bi-elliptical transfer, there is an additional free parameter, which we control \textit{via} the ratio $r_{m1}$.
 
-We can thus draw the evolution of the relative speed variation between the initial and final orbits ($\Delta \bar{v}$, which is a classic feature to study when comparing the two methods. The plot in question can be found in Figure \ref{plot:vbar}.
+We can thus draw the evolution of the relative speed variation between the initial and final orbits ($\Delta \bar{v}$, which we defined in (\ref{eq:vbar}). The plot in question can be found in Figure \ref{plot:vbar}.
 
 
 \begin{figure}[htp!]
@@ -98,10 +99,10 @@ We can thus draw the evolution of the relative speed variation between the initi
   \label{plot:vbar}
 \end{figure}
 
-As we can see, when speaking strictly in terms of normalized speed difference, the Hohmann transfer is more efficient than the bi-elliptic transfer for low values of $r_{21}$, no matter the value of $r_{m1}$. To find the limit value of $r_{21}$ above which the Hohmann transfer stops being always optimal, one can calculate the point of intersection between the speed variation curve for the Hohmann transfer and that of the bi-elliptic transfer for $r_{m1}=+\infty$, which gives the value $r_{{21}_{max}}\approx 11.94$.
+As we can see, when speaking strictly in terms of normalized speed difference, the Hohmann transfer is more efficient than the bi-elliptic transfer for low values of $r_{21}$, no matter the value of $r_{m1}$. To find the limit value of $r_{21}$ above which the Hohmann transfer stops always being optimal, one can calculate the point of intersection between the speed variation curve for the Hohmann transfer and that of the bi-elliptic transfer for $r_{m1}=+\infty$, which gives the value $r_{{21}_{max}}\approx 11.94$.
 
 Conversely, if we make the assumption that $r_m \geq r_2$, there is a minimal value of 
-$r_{21}$ above which any value of $r_{m1}$ greater than $r_{21}$ corresponds to a bi-elliptic transfer more efficient than the Hohmann transfer. To find that value, one needs to calculate the smallest value of $r_{21}$ such that the normalized speed variation for any $r_{m1}\geq r_{21}$ is lower for the bi-elliptic transfer. That minimum value $r_{{21}_{min}}$ has a value of approximately 15.58.
+$r_{21}$ above which any value of $r_{m1}$ greater than $r_{21}$ corresponds to a bi-elliptic transfer more efficient than the Hohmann transfer. To find that value, one needs to calculate the smallest value of $r_{21}$ such that the normalized speed variation for any $r_{m1}\geq r_{21}$ is lower for the bi-elliptic transfer. That minimum value $r_{{21}_{min}}$ amount to approximately 15.58.
 
 \begin{remark}
 We found those two particular values of $r_{21}$ by developing a short Matlab script which can be found in \cite{git_program}.
@@ -109,7 +110,7 @@ We found those two particular values of $r_{21}$ by developing a short Matlab sc
 
 For values of $r_{21}$ comprised between 11.94 and 15.58, whichever transfer is more efficient depends on the value of $r_{m1}$, as shown by Figure \ref{plot:vbar3}.
 
-Figure \ref{plot:vbar2} shows a zoomed portion of Figure \ref{plot:vbar1}, showcasing the two limit values of $r_{21}$ mentioned earlier, and their graphical interpretation as the intersection of the energy efficiency curves. Figure \ref{plot:vbar3} illustrates the minimal value of $r_{m1}$ above which the bi-elliptic transfer is more efficient for values of $r_{21}$ between $11.94$ and $15.58$. Finally, Table \ref{table:1} shows in a condensed way which transfer is more efficient given the values of $r_{21}$ and $r_{m1}$.
+Figure \ref{plot:vbar2} shows a zoomed portion of Figure \ref{plot:vbar}, showcasing the two limit values of $r_{21}$ mentioned earlier, and their graphical interpretation as the intersections of energy efficiency curves. Figure \ref{plot:vbar3} illustrates the minimal value of $r_{m1}$ above which the bi-elliptic transfer is more efficient for values of $r_{21}$ between $11.94$ and $15.58$. Finally, Table \ref{table:1} shows in a condensed way which transfer is more efficient given the values of $r_{21}$ and $r_{m1}$.
 \begin{table}[h!]
 \centering
  \begin{tabular}{| c | c| c |} 
@@ -142,7 +143,7 @@ Figure \ref{plot:vbar2} shows a zoomed portion of Figure \ref{plot:vbar1}, showc
   \label{plot:vbar3}
 \end{figure}
 
-\section*{Conclusion and open questions}
+\section*{Concluding remarks}
 
 In this short study, we showed the relative efficiency of two classic orbit methods using a simple criterion based on normalized speed variation. This analysis, though limited, has however allowed us to clearly define in what situations either transfer is more efficient with regard to that criterion.
 

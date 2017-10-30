@@ -18,9 +18,6 @@ int main(int argc, char* argv[])
 {
 	//__________DEFINING VARIABLES__________
 
-	// Ratio of the final orbit radius over the initial orbit radius (dimensionless)
-	double r21 = 0.;
-
 	// Minimal ratio desired
 	double min_r21 = 11.;
 
@@ -81,6 +78,9 @@ int main(int argc, char* argv[])
 	}
 	
 	//_________CALCULATING ENERGY EFFICIENCY__________
+
+	// Ratio of the final orbit radius over the initial orbit radius (dimensionless)
+	double r21 = 0.;
 
 	// Hohmann transfer energy efficiency
 	vector<vector<double>>hohmann_energy_efficiencies;
